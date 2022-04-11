@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import './App.css';
 import CardList from './components/card-list/card-list-component.jsx'
+import SearchBox from './components/search-box/search-box.jsx'
 
 class App extends Component {
   constructor() {
@@ -10,20 +11,15 @@ class App extends Component {
       monsters: [],
       searchField: ''
     };
-    console.log('constructor');
   }
 
   componentDidMount(){
-    console.log('componentDidMount');
     fetch('https://jsonplaceholder.typicode.com/users')
       // once we fetch, we'll get a promise and call .then() on that value
       // pass a callback where the argument is the response itself
       .then((response) => response.json())
       .then((users) => this.setState(() => {
         return {monsters: users}
-      },
-      () => { 
-        console.log(this.state)
       }
     ));
   }
@@ -37,7 +33,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('render')
     const { monsters, searchField } = this.state;
     const { onSearchChange } = this;
 
@@ -46,19 +41,17 @@ class App extends Component {
     });
     return (
       <div className="App">
-        <input 
-          className="search-box" 
-          type="search" 
-          placeholder="Search Monsters" 
-          // will run every time the input changes
-          onChange={onSearchChange}
-        />
           {
             /*filteredMonsters.map((monster) => {
               return <div key={monster.id}><h2>{monster.name}</h2></div>
             })*/
           }
-          <CardList />
+          <SearchBox 
+            className="monsters-search-box"
+            placeholder='Search Monsters' 
+            onChangeHandler={onSearchChange} 
+          />
+          <CardList monsters={filteredMonsters}/>
       </div>
     );
   }
